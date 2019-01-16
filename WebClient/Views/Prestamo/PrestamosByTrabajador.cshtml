@@ -1,0 +1,176 @@
+﻿@model IEnumerable<WebClient.Models.Prestamo>
+
+@{
+    ViewData["Title"] = "PrestamosByTrabajador";
+    Layout = null;
+}
+
+@if (Model.ToList().Count() != 0)
+    {
+    <button class="btn btn-outline btn-primary dim" type="button" id="ButonPrestamo" style="background-color: #1ab394; color: white; float: right;" data-toggle="modal" data-target="#myModalPrestamo"><i class="fa fa-money"></i>Solicitar Prestamo</button>
+
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Prestamos</h5>
+            <div class="ibox-tools">
+
+            </div>
+        </div>
+
+        <div class="ibox-content">
+
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Monto)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                    {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Monto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    }
+else
+    {
+    <h2> No Existen Prestamos a mostrar, desea solicitar uno?</h2>
+    <button class="btn btn-outline btn-primary dim" id="ButonPrestamo" type="button" style="background-color: #1ab394; color: white; float: right;" data-toggle="modal" data-target="#myModalPrestamo"><i class="fa fa-money"></i>Solicitar Prestamo</button>
+
+
+    }
+
+
+<div class="modal inmodal" id="myModalPrestamo" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <i class="fa fa-money modal-icon"></i>
+                <h4 class="modal-title">Solicitud de Prestamo</h4>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label>Monto a Solicitar</label> <input type="number" placeholder="Ingrese el monto" value="" id="text" onInput="validarInput()" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" id="btn_Validar" onclick="SolicidarPrestamo()" class="btn btn-primary">Solicitar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="myModalPrestamoReturn" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated tada">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <i class="fa fa-money modal-icon"></i>
+                <h4 class="modal-title">Solicitud de Prestamo</h4>
+
+                <div class="modal-body">
+                    <div class="alert alert-info" id="ResultSolicitudmessage" style="color: #1ab394;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btn_ValidarA" onclick="AceptarPrestamo()" class="btn btn-primary">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function() {
+
+        validarInput();
+
+    });
+
+    function AceptarPrestamo() {
+
+        $.ajax({
+            data: { IdTrabajador: '@ViewBag.IdTrabajador', monto: document.getElementById("text").value },
+            url: '@Url.Action("AceptarPrestamo", "Prestamo")',
+
+        }).done(function(data) {
+            $('#myModalPrestamoReturn').modal('hide');
+            toastr.success('Felicidades!!', 'Su prestamo ha sido efectuado')
+            document.getElementById("text").value = 0;
+            RenderPrestamos();
+
+        });
+
+    }
+
+    function SolicidarPrestamo() {
+
+        var ResultSolicitudmessage = $('#ResultSolicitudmessage');
+        var monto = document.getElementById("text").value;
+        $.ajax({
+            data: { IdTrabajador: '@ViewBag.IdTrabajador', monto: monto },
+            url: '@Url.Action("SolicitarPrestamo", "Prestamo")',
+
+        }).done(function(data) {
+            $('#myModalPrestamo').modal('hide');
+            var message = "";
+            if (data == 0) {
+
+                message =
+                    "Lo sentimos, su prestamo no ha sido aprobado dado que no cumple con los requisitos de antiguedad.";
+                document.getElementById("btn_ValidarA").disabled = true;
+            }
+            if (data == monto) {
+
+                message = "La Cantidad Solicitada de $" + monto + " ha sido aprobada.";
+                document.getElementById("btn_ValidarA").disabled = false;
+            }
+            if (data < monto && data > 0) {
+
+                message = "Dada su antiguedad en la empresa no se le ha aprobado su solicitud de $" +
+                    monto +
+                    ", se le puede prestar hasta la cantidad de $" +
+                    data;
+                document.getElementById("btn_ValidarA").disabled = false;
+            }
+            document.getElementById("text").value = data;
+            ResultSolicitudmessage.html(message);
+            $('#myModalPrestamoReturn').modal('show');
+        });
+
+    }
+
+</script>

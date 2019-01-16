@@ -1,0 +1,113 @@
+﻿@model IEnumerable<WebClient.Models.Ahorro>
+
+@{
+    ViewData["Title"] = "AhorrosByTrabajador";
+    Layout = null;
+}
+
+@if (Model.ToList().Count() != 0)
+    {
+    <button class="btn btn-outline btn-primary dim" type="button" id="ButonAhorro" style="background-color: #1ab394; color: white; float: left;" data-toggle="modal" data-target="#myModalAhorro"><i class="fa fa-money"></i>Añadir Ahorro</button>
+
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Ahorros</h5>
+            <div class="ibox-tools">
+
+            </div>
+        </div>
+
+        <div class="ibox-content">
+
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Monto)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                    {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Monto)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    }
+else
+    {
+    <h2> No Existen Ahorros a mostrar, desea añadir alguno?</h2>
+    <button class="btn btn-outline btn-primary dim" id="ButonAhorro" type="button" style="background-color: #1ab394; color: white; float: right;" data-toggle="modal" data-target="#myModalAhorro"><i class="fa fa-money"></i>Añadir Ahorro</button>
+
+
+    }
+
+
+<div class="modal inmodal" id="myModalAhorro" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content animated bounceInRight">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <i class="fa fa-money modal-icon"></i>
+                <h4 class="modal-title">Ingreso de Ahorro</h4>
+
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label>Monto a Ingresar</label> <input type="number" placeholder="Ingrese el monto" value="" id="textAhorro" onInput="validarInputAhorro()" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" id="btn_ValidarAhorro" onclick="AddAhorro()" class="btn btn-primary">Añadir</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function() {
+
+        validarInputAhorro();
+
+    });
+
+    function AddAhorro() {
+
+        $.ajax({
+            data: { IdTrabajador: '@ViewBag.IdTrabajador', monto: document.getElementById("textAhorro").value },
+            url: '@Url.Action("AddAhorro", "Ahorro")',
+
+        }).done(function(data) {
+            toastr.success('Felicidades!!', 'Su ahorro a sido añadido')
+            document.getElementById("textAhorro").value = 0;
+            $('#myModalAhorro').modal('hide');
+            RenderAhorros();
+
+        });
+
+    }
+
+</script>

@@ -1,0 +1,39 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            @if (SignInManager.IsSignedIn(User))
+                {
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span>
+                            <img alt="image" class="img-circle" src="~/images/user.png" style="width: 30%;" />
+                        </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</strong>
+                                </span> <span class="text-muted text-xs block">Perfil <b class="caret"></b></span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="@Url.Action("Manage", "Account")">Perfil</a></li>
+
+                        </ul>
+                    </div>
+
+                </li>
+                }
+            <li>
+                <a href="@Url.Action("IndexAsync", "Home")"><i class="fa fa-home"></i> <span class="nav-label" data-i18n="nav.layouts">Inicio</span> </a>
+            </li>
+            @if (User.IsInRole("Admin"))
+                {
+                <li>
+                    <a href="@Url.Action("ReporteTrabajadores", "Trabajador")"><i class="fa fa-users"></i> <span class="nav-label" data-i18n="nav.layouts">Trabajadores</span> </a>
+                </li>
+                }
+        </ul>
+    </div>
+</nav>

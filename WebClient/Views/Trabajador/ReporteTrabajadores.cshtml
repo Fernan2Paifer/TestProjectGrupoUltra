@@ -1,0 +1,64 @@
+﻿@model IEnumerable<WebClient.Models.ReporteTrabajadores>
+
+    @{
+        ViewData["Title"] = "ReporteTrabajadores";
+    }
+
+    <h2>Trabajadores</h2>
+    
+
+
+    <div class="ibox-content">
+
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Employee.Nombre)
+                    </th>
+                    <th>
+                        Monto Ahorro Inicial
+                    </th>
+                    <th>
+                        Fecha Inicio Relacion Laboral
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Antiguedad)
+                    </th>
+                    <th>
+                        Monto Ahorrado
+                    </th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                    {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.MontoAinicial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.FechaInicioRl)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Antiguedad)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MontoAhorrado)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Prestamos", "DetailPrestamoTrabajador", "Prestamo", new { IdTrabajador = item.Employee.IdTrabajador })
+
+                    </td>
+
+                </tr>
+                    }
+            </tbody>
+        </table>
+        </div>

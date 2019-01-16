@@ -1,0 +1,107 @@
+﻿@model WebClient.Models.ReporteTrabajadores
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+
+<div class="row">
+    <div class="col-lg-3">
+    </div>
+
+    <div class="col-lg-6">
+        <div class="widget-head-color-box navy-bg p-lg text-center">
+            <div class="m-b-md">
+                <h2 class="font-bold no-margins">
+                    @Model.Employee.Nombre
+                </h2>
+
+            </div>
+            <img src="~/images/user.png" class="img-circle circle-border m-b-md" style="width: 30%;" alt="profile">
+
+        </div>
+        <div class="widget-text-box">
+            @if (Model.Employee.Inscrito == false)
+                {
+                <h4 class="media-heading"> @Model.Employee.Nombre</h4>
+                <p>Ud no esta inscrito en nuestra caja de ahorro, si desea puede hacerlo..</p>
+                <div class="text-right">
+
+                    <a href="@Url.Action("Inscribir", "Trabajador", new {idTrabajador = @Model.Employee.IdTrabajador})" class="btn btn-xs btn-primary"><i class="fa fa-level-up"></i> Inscribir</a>
+                </div>
+                }
+            else
+                {
+
+                <h4 class="media-heading"> @Model.Employee.Nombre</h4>
+                <p>Gracias por confiar en nuestra Caja de ahorro..</p>
+                }
+        </div>
+    </div>
+    <div class="col-lg-3">
+    </div>
+
+</div>
+<hr>
+@if (Model.Employee.Inscrito)
+    {
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="RenderAhorros">
+
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+
+            <div id="RenderPrestamos">
+            </div>
+        </div>
+    </div>
+
+    }
+
+
+<script>
+
+    $(document).ready(function() {
+
+        RenderPrestamos();
+        RenderAhorros();
+
+    });
+
+    function RenderPrestamos() {
+
+        var areaResultadoPrestamos = $('#RenderPrestamos');
+
+        $.ajax({
+            data: { IdTrabajador: '@Model.Employee.IdTrabajador' },
+            url: '@Url.Action("PrestamosByTrabajador", "Prestamo")',
+
+        }).done(function(data) {
+
+            areaResultadoPrestamos.html(data);
+        });
+
+    }
+
+    function RenderAhorros() {
+
+        var areaResultadoAhorros = $('#RenderAhorros');
+
+        $.ajax({
+            data: { IdTrabajador: '@Model.Employee.IdTrabajador' },
+            url: '@Url.Action("AhorrosByTrabajador", "Ahorro")',
+
+        }).done(function(data) {
+
+            areaResultadoAhorros.html(data);
+        });
+
+    }
+
+
+</script>
