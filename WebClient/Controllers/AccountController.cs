@@ -58,8 +58,11 @@ public class AccountController : Controller
 	public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
 		{
 
-
-		ViewData["ReturnUrl"] = returnUrl;
+		foreach (var cookie in Request.Cookies.Keys)
+			{
+			Response.Cookies.Delete(cookie);
+			}
+            ViewData["ReturnUrl"] = returnUrl;
 
 		if (ModelState.IsValid)
 			{
@@ -272,8 +275,12 @@ public class AccountController : Controller
 	[ValidateAntiForgeryToken]
 	public IActionResult ExternalLogin(string provider, string returnUrl = null)
 		{
-		// Request a redirect to the external login provider.
-		var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new {returnUrl});
+		foreach (var cookie in Request.Cookies.Keys)
+			{
+			Response.Cookies.Delete(cookie);
+			}
+            // Request a redirect to the external login provider.
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new {returnUrl});
 		var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 		return Challenge(properties, provider);
 		}

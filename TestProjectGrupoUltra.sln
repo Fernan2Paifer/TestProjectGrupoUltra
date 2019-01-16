@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCajaAhorro", "ApiCajaAho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClient", "WebClient\WebClient.csproj", "{172DA07B-E1CE-41A4-B456-CE24D0D2228D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CajaAhorroWeb", "CajaAhorroWeb\CajaAhorroWeb.csproj", "{609F7D91-FEB4-422B-8BC4-5A1F842917DC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClientCajaAhorro", "WebClientCajaAhorro\WebClientCajaAhorro.csproj", "{6443DED4-961C-463D-8ECC-600053C8F4B6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,14 +27,6 @@ Global
 		{172DA07B-E1CE-41A4-B456-CE24D0D2228D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{172DA07B-E1CE-41A4-B456-CE24D0D2228D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{172DA07B-E1CE-41A4-B456-CE24D0D2228D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{609F7D91-FEB4-422B-8BC4-5A1F842917DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{609F7D91-FEB4-422B-8BC4-5A1F842917DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{609F7D91-FEB4-422B-8BC4-5A1F842917DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{609F7D91-FEB4-422B-8BC4-5A1F842917DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6443DED4-961C-463D-8ECC-600053C8F4B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6443DED4-961C-463D-8ECC-600053C8F4B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6443DED4-961C-463D-8ECC-600053C8F4B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6443DED4-961C-463D-8ECC-600053C8F4B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
