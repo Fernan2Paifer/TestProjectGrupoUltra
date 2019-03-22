@@ -111,12 +111,31 @@ var ya=false;
         try { return await $.when($.ajax(settings)); }
         catch (error) {
             errorX = error;
-            Console.Info("Error de Peticion: "+error)
+            console.log("Error de Peticion: "+error+" voy a login");
+            goLogin();
             return null; 
         }
     }
 
+   async function goLogin() {
 
+     var settings = {
+            async: true,
+
+            url: "https://mexitel.sre.gob.mx/citas.webportal/pages/public/login/login.jsf",
+            method: "POST",
+            xhrFields: { withCredentials: true },
+           crossDomain: true,
+            timeout: 30000
+        };
+try { return await $.when($.ajax(settings)); }
+        catch (error) {
+            errorX = error;
+            Console.Info("Error de Peticion a login: "+error)
+            return null; 
+        }
+
+   }
  
 
     async function setDocument() {
